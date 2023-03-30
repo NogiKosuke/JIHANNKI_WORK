@@ -3,6 +3,7 @@ class VendingMachine
   # ステップ１　扱えないお金の例コード
   # NOGIT IS COOL
   # 10円玉、50円玉、100円玉、500円玉、1000円札を１つずつ投入できる。
+  #beautiful moe
   MONEY = [10, 50, 100, 500, 1000].freeze
 
   # （自動販売機に投入された金額をインスタンス変数の @slot_money に代入する）
