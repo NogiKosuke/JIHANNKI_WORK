@@ -10,6 +10,8 @@ class VendingMachine
   def initialize
     # 最初の自動販売機に入っている金額は0円
     @slot_money = 0
+    # 最初の自販機に入っているのは１２０円のコーラ５本
+    @beverage = {coke: {price: 120, stock: 5}}
   end
 
   # 投入金額の総計を取得できる。
@@ -34,5 +36,12 @@ class VendingMachine
     puts @slot_money
     # 自動販売機に入っているお金を0円に戻す
     @slot_money = 0
+  end
+
+  # 格納されているジュースの情報を取得する
+  def get_all_beverages 
+    @beverage.each do |name, hash|
+      puts "ジュース名： #{name}, 値段: #{hash[:price]}, 在庫数:  #{hash[:stock]}"
+    end
   end
 end

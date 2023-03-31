@@ -15,4 +15,12 @@ def stock_juice (name, price, stock)
   puts juice_hash[:name][:stock]
 end
 
-stock_juice("ocha", 120, 2)
+# stock_juice("ocha", 120, 2)
+
+puts "=========="
+juice_hash.each do |key, hash| 
+# puts key
+# puts hash[:price]
+# puts hash[:stock]
+puts "ジュース名： #{key}, 値段: #{hash[:price]}, 在庫数:  #{hash[:stock]}"
+end
