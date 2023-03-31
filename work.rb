@@ -10,6 +10,8 @@ class VendingMachine
   def initialize
     # 最初の自動販売機に入っている金額は0円
     @slot_money = 0
+    # 最初の自販機に入っているのは１２０円のコーラ５本
+    @beverage = {coke: {price: 120, stock: 5}}
   end
 
   # 投入金額の総計を取得できる。
