@@ -12,6 +12,8 @@ class VendingMachine
     @slot_money = 0
     # 最初の自販機に入っているのは１２０円のコーラ５本
     @beverage = {coke: {price: 120, stock: 5}}
+    # 最初の売上金額は０円
+    @sale_amount = 0
   end
 
   # 投入金額の総計を取得できる。
@@ -43,5 +45,20 @@ class VendingMachine
     @beverage.each do |name, hash|
       puts "ジュース名： #{name}, 値段: #{hash[:price]}, 在庫数:  #{hash[:stock]}"
     end
+  end
+  
+  def check_buy(name)
+    if @beverage[name.to_sym][:stock] >= 1 && @beverage[name.to_sym][:price] <= @slot_money
+      puts "買えるよ！"
+    else
+      puts "買えないよ！"
+    end
+  end
+  
+  
+  ジュース値段以上の投入金額が投入されている条件下で購入操作を行うと、ジュースの在庫を減らし、売り上げ金額を増やす。
+  
+  def buy(name)
+    
   end
 end

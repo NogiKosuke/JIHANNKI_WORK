@@ -1,10 +1,9 @@
 juice_hash = {coke: {price: 120, stock: 5}, water: {price: 100, stock: 3}}
 
-puts juice_hash
+# puts juice_hash
 
-
-puts juice_hash[:coke][:price]
-puts juice_hash[:coke][:stock]
+# puts juice_hash[:coke][:price]
+# puts juice_hash[:coke][:stock]
 
 def stock_juice (name, price, stock)
   puts test = {"#{name}": {price: price, stock: stock}}
@@ -15,12 +14,18 @@ def stock_juice (name, price, stock)
   puts juice_hash[:name][:stock]
 end
 
-# stock_juice("ocha", 120, 2)
 
-puts "=========="
-juice_hash.each do |key, hash| 
-# puts key
-# puts hash[:price]
-# puts hash[:stock]
-puts "ジュース名： #{key}, 値段: #{hash[:price]}, 在庫数:  #{hash[:stock]}"
+
+
+# >= 1 && juice_hash["#{name}"][:price] <= @slot_money
+
+name = "coke"
+puts "#{name.to_sym}"
+
+puts juice_hash[name.to_sym]
+
+if juice_hash[name.to_sym][:stock] >= 1 && juice_hash[name.to_sym][:price] <= @slot_money
+  puts "買えるよ！"
 end
+
+# stock_juice("ocha", 120, 2)
