@@ -50,15 +50,20 @@ class VendingMachine
   def check_buy(name)
     if @beverage[name.to_sym][:stock] >= 1 && @beverage[name.to_sym][:price] <= @slot_money
       puts "買えるよ！"
+      true
     else
       puts "買えないよ！"
+      false
     end
   end
   
-  
-  ジュース値段以上の投入金額が投入されている条件下で購入操作を行うと、ジュースの在庫を減らし、売り上げ金額を増やす。
-  
   def buy(name)
-    
+    if check_buy(name)
+      puts "============="
+      @beverage[name.to_sym][:stock] -= 1
+      @sale_amount += @beverage[name.to_sym][:price]
+      puts @beverage[name.to_sym][:stock]
+      puts @sale_amount
+    end
   end
 end
