@@ -37,4 +37,11 @@ class VendingMachine
     # 自動販売機に入っているお金を0円に戻す
     @slot_money = 0
   end
+
+  # 格納されているジュースの情報を取得する
+  def get_all_beverages 
+    @beverage.each do |name, hash|
+      puts "ジュース名： #{name}, 値段: #{hash[:price]}, 在庫数:  #{hash[:stock]}"
+    end
+  end
 end
