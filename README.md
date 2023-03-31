@@ -52,3 +52,5 @@ require '/home/user/workspace/JIHANNKI_WORK/work.rb'
  moe.check_buy('coke')
   moe.slot_money(1000)
   moe.current_slot_money
+
+require'/Users/user/workspace/JIHANNKI_WORK/work.rb'
