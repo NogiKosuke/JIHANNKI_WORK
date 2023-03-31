@@ -35,7 +35,7 @@ class VendingMachine
   # 払い戻し操作を行うと、投入金額の総計を釣り銭として出力する。
   def return_money
     # 返すお金の金額を表示する
-    puts @slot_money
+    puts @slot_money - @sale_amount
     # 自動販売機に入っているお金を0円に戻す
     @slot_money = 0
   end
@@ -59,11 +59,15 @@ class VendingMachine
   
   def buy(name)
     if check_buy(name)
-      puts "============="
       @beverage[name.to_sym][:stock] -= 1
       @sale_amount += @beverage[name.to_sym][:price]
       puts @beverage[name.to_sym][:stock]
       puts @sale_amount
     end
   end
+
+  def get_sale_amount
+    @sale_amount
+  end
+
 end
