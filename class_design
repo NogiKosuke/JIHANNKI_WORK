@@ -1,0 +1,9 @@
+Class	User	VendingMachine	Beverage	Money
+Method	Wallet	initialize	add_beverage	CoinBill
+	slot_money	current_slot_money	reduce_beverage	
+		return_money		
+		get_all_beverages 		
+		get_purchaseable		
+		check_buy		
+		buy		
+		get_sale_amount		
