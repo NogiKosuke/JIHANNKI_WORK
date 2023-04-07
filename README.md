@@ -51,4 +51,20 @@ require '/home/user/workspace/JIHANNKI_WORK/work.rb'
   moe.slot_money(1000)
   moe.current_slot_money
 
-require'/Users/user/workspace/JIHANNKI_WORK/work.rb'
+
+-----presentation-----
+require '/home/user/workspace/JIHANNKI_WORK/work.rb'
+ moe = VendingMachine.new
+ moe.check_buy('coke')
+ moe.get_purchaseable
+  moe.slot_money(1000)
+  moe.current_slot_money
+moe.check_buy('coke')
+ moe.get_purchaseable
+
+moe.buy('coke')
+
+moe.add_beverages("Tea", 130, 3)
+moe.get_all_beverages 
+moe.return_money
+---------------------------
