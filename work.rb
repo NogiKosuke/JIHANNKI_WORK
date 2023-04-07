@@ -11,7 +11,9 @@ class VendingMachine
     # 最初の自動販売機に入っている金額は0円
     @slot_money = 0
     # 最初の自販機に入っているのは１２０円のコーラ５本
-    @beverage = {coke: {price: 120, stock: 5}}
+    @beverage = {coke: {price: 120, stock: 5},
+                  water: {price: 100, stock: 5},
+                  redbull: {price: 200, stock: 5}}
     # 最初の売上金額は０円
     @sale_amount = 0
   end
@@ -44,6 +46,21 @@ class VendingMachine
   def get_all_beverages 
     @beverage.each do |name, hash|
       puts "ジュース名： #{name}, 値段: #{hash[:price]}, 在庫数:  #{hash[:stock]}"
+    end
+  end
+
+  #自動販売機にジュースを入れる
+  def add_beverages(name, price, stock)
+    @beverage.store(name.to_sym, {price: price, stock: stock})
+  end
+  
+  # 投入金額、在庫の点で購入可能なドリンクのリストを取得できる。
+  def get_purchaseable
+    puts "購入できる商品は以下の通り"
+    @beverage.each do |name, hash|
+      if hash[:price]<=@slot_money && hash[:stock]>=1
+        puts "#{name}"
+      end
     end
   end
   
