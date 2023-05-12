@@ -54,7 +54,8 @@ require '/home/user/workspace/JIHANNKI_WORK/work.rb'
 
 -----presentation-----
 require '/home/user/workspace/JIHANNKI_WORK/work.rb'
- moe = VendingMachine.new
+ vm = VendingMachine.new
+ moe = User.new
  moe.check_buy('coke')
  moe.get_purchaseable
   moe.slot_money(1000)
@@ -68,3 +69,5 @@ moe.add_beverages("Tea", 130, 3)
 moe.get_all_beverages 
 moe.return_money
 ---------------------------
+vm = VendingMachine.new
+moe.slot_money_to_vm(500)
