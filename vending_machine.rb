@@ -6,6 +6,8 @@ class VendingMachine
   #beautiful moe
   MONEY = [10, 50, 100, 500, 1000].freeze
 
+  attr_accessor :slot_money
+
   # （自動販売機に投入された金額をインスタンス変数の @slot_money に代入する）
   def initialize
     # 最初の自動販売機に入っている金額は0円
@@ -26,10 +28,10 @@ class VendingMachine
 
   # 10円玉、50円玉、100円玉、500円玉、1000円札を１つずつ投入できる。
   # 投入は複数回できる。
-  def slot_money(money)
+  def slot_money_in(money)
     # 想定外のもの（１円玉や５円玉。千円札以外のお札、そもそもお金じゃないもの（数字以外のもの）など）
     # が投入された場合は、投入金額に加算せず、それをそのまま釣り銭としてユーザに出力する。
-    return false unless MONEY.include?(money)
+    return puts"失敗しました" unless MONEY.include?(money)
     # 自動販売機にお金を入れる
     @slot_money += money
   end
@@ -37,8 +39,8 @@ class VendingMachine
   # 払い戻し操作を行うと、投入金額の総計を釣り銭として出力する。
   def return_money
     # 返すお金の金額を表示する
-    puts @slot_money - @sale_amount
-    # 自動販売機に入っているお金を0円に戻す
+    puts "#{@slot_money - @sale_amount}円返却しました"
+    # 自動販売機に入っているお金を0円に戻す˝
     @slot_money = 0
   end
 
@@ -65,7 +67,7 @@ class VendingMachine
   end
   
   def check_buy(name)
-    if @beverage[name.to_sym][:stock] >= 1 && @beverage[name.to_sym][:price] <= @slot_money
+    if @beverage[name.to_sym][:stock] >= 1 && @beverage[name.to_sym][:price] <= slot_money
       puts "買えるよ！"
       true
     else
@@ -78,13 +80,66 @@ class VendingMachine
     if check_buy(name)
       @beverage[name.to_sym][:stock] -= 1
       @sale_amount += @beverage[name.to_sym][:price]
-      puts @beverage[name.to_sym][:stock]
-      puts @sale_amount
+      # puts @beverage[name.to_sym][:stock]
+      # puts @sale_amount
     end
   end
 
   def get_sale_amount
     @sale_amount
   end
-
 end
+
+class Boot
+  def self.vending_machine
+    vm = VendingMachine.new
+    while true
+      puts "いらっしゃいませ　数字を入力してください"
+      puts "1:お金を入れる"
+      puts "2:購入する"
+      puts "3:終了する"
+      number = gets.to_i
+      if number == 1
+        puts "1:お金を入れる"
+        puts "お金を入れてください　（一枚ずつ入れてください）"
+          money = gets.to_i
+          vm.slot_money_in(money)
+          puts"現在の投入金額は#{vm.slot_money}円です。"
+          puts "--------------------------------------------"
+          vm.get_purchaseable
+      elsif number == 2
+        puts "購入したい商品を入力してください"
+        vm.get_purchaseable
+        name = gets.chomp
+        vm.buy(name)
+      elsif number == 3
+        vm.return_money
+        puts "ありがとうございました　またのご利用をお待ちしております"
+        break
+      elsif number == 23031107 
+        while true
+          puts "管理者メニュー"
+          puts "1:売上を見る"
+          puts "2:在庫を確認する"
+          puts "3:商品を追加する"
+          puts "4:終了する"
+          admin_number = gets.to_i
+          if admin_number == 1
+            puts "売上は#{vm.get_sale_amount}円です。"
+          elsif admin_number == 2
+            vm.get_all_beverages
+          elsif admin_number == 3
+            puts "商品を更新します。商品名を入力してください"
+            name = gets.chomp
+          elsif admin_number == 4
+            break
+          end
+        end
+      else
+        puts "１〜３の数字を入力してください"
+      end
+    end
+  end
+end
+
+Boot.vending_machine
