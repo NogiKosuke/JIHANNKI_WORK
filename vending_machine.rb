@@ -142,4 +142,4 @@ class Boot
   end
 end
 
-Boot.vending_machine
+# Boot.vending_machine
