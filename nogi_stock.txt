@@ -1,1 +1,1 @@
-{coke: {price: 120, stock: 5}, water: {price: 100, stock: 5}, redbull: {price: 200, stock: 5}}
+{:coke=>{:price=>120, :stock=>2}, :water=>{:price=>100, :stock=>4}, :redbull=>{:price=>200, :stock=>1}}

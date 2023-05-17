@@ -1,25 +1,46 @@
 class VendingMachine
+  require 'json'
   # ステップ０　お金の投入と払い戻しの例コード
   # ステップ１　扱えないお金の例コード
   # NOGIT IS COOL
   # 10円玉、50円玉、100円玉、500円玉、1000円札を１つずつ投入できる。
   #beautiful moe
   MONEY = [10, 50, 100, 500, 1000].freeze
+  STOCK_FILE = "nogi_stock.txt"
+  SALE_AMOUNT_FILE = "nogi_sale_amount.txt"
+  HIT_AMOUNT_FILE = "nogi_hit_amount.txt"
 
-  attr_accessor :slot_money, :hit_flag
+  attr_accessor :slot_money, :hit_flag, :sale_amount, :hit_amount
 
   # （自動販売機に投入された金額をインスタンス変数の @slot_money に代入する）
   def initialize
     # 最初の自動販売機に入っている金額は0円
     @slot_money = 0
     # 最初の自販機に入っているのは１２０円のコーラ５本
-    @beverage = {coke: {price: 120, stock: 5},
-                  water: {price: 100, stock: 5},
-                  redbull: {price: 200, stock: 5}}
+    unless read_stock
+      @beverage = {coke: {price: 120, stock: 5},
+                    water: {price: 100, stock: 5},
+                    redbull: {price: 200, stock: 5}}
+    else
+      read_stock
+    end
     # 最初の売上金額は０円
     @sale_amount = 0
     @hit_flag = false
     @hit_amount = 0
+  end
+
+  def read_stock 
+    unless File.exist?(STOCK_FILE)
+      return false
+    else
+      file = File.open(STOCK_FILE, "r")
+      str = file.read
+      str = str.gsub(/:(\w+)=>/)do
+          "\"#{$1}\": "
+      end
+      @beverage = JSON.parse(str, symbolize_names: true)
+    end
   end
 
   # 投入金額の総計を取得できる。
@@ -54,7 +75,7 @@ class VendingMachine
   end
 
   #自動販売機にジュースを入れる
-  def add_beverages(name, price, stock)
+  def update_beverages(name, price, stock)
     @beverage.store(name.to_sym, {price: price, stock: stock})
   end
   
@@ -108,8 +129,6 @@ class VendingMachine
         @hit_amount += @beverage[name.to_sym][:price]
       end
       true
-      # puts @beverage[name.to_sym][:stock]
-      # puts @sale_amount
     end
   end
 
@@ -119,7 +138,7 @@ class VendingMachine
 
   def hit
     @hit_flag = false
-    @rand_num = rand(1..100)
+    @rand_num = rand(1..3)
   end
 
   def display_hit(rand_num)
@@ -141,6 +160,22 @@ class VendingMachine
       sleep 0.5
       puts "はずれ！"
     end
+  end
+
+  def save_stock
+    f = File.open(STOCK_FILE,"w")
+    f.puts @beverage
+    f.close
+  end
+
+  def save_amount(fine_name, amount)
+    if File.exist?(fine_name)
+      f = File.open(fine_name,"r")
+      amount += f.read.chomp.to_i
+    end
+    f = File.open(fine_name,"w")
+    f.puts amount
+    f.close
   end
 end
 
@@ -180,13 +215,16 @@ class Boot
       elsif number == 3
         vm.return_money
         puts "ありがとうございました　またのご利用をお待ちしております"
+        vm.save_stock
+        vm.save_amount(VendingMachine::SALE_AMOUNT_FILE, vm.sale_amount)
+        vm.save_amount(VendingMachine::HIT_AMOUNT_FILE, vm.hit_amount)
         break
       elsif number == 23031107 
         while true
           puts "管理者メニュー"
           puts "1:売上を見る"
           puts "2:在庫を確認する"
-          puts "3:商品を追加する"
+          puts "3:商品を更新する"
           puts "4:終了する"
           admin_number = gets.to_i
           if admin_number == 1
@@ -196,6 +234,12 @@ class Boot
           elsif admin_number == 3
             puts "商品を更新します。商品名を入力してください"
             name = gets.chomp
+            puts "値段を入力してください"
+            price = gets.chomp.to_i
+            puts "在庫数を入力してください"
+            stock = gets.chomp.to_i
+            vm.update_beverages(name, price, stock)
+            vm.get_all_beverages
           elsif admin_number == 4
             break
           end
