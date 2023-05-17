@@ -77,12 +77,10 @@ class VendingMachine
   end
   
   def check_buy(name)
-    # begin 
-    #   @beverage[name.to_sym][:stock]
-    # rescue NoMethodError => error
-    #   puts "その商品はありません"
-    #   return
-    # end
+    unless @beverage.has_key?(name.to_sym)
+      puts "その商品はありません"
+      return false
+    end
     unless @hit_flag
       if @beverage[name.to_sym][:stock] >= 1 && @beverage[name.to_sym][:price] <= slot_money
         puts "買えるよ！"
@@ -104,14 +102,12 @@ class VendingMachine
   
   def buy(name)
     if check_buy(name)
-      # if error
-      #   return error_flag = true
-      # end
       @beverage[name.to_sym][:stock] -= 1
       @sale_amount += @beverage[name.to_sym][:price]
       if @hit_flag
         @hit_amount += @beverage[name.to_sym][:price]
       end
+      true
       # puts @beverage[name.to_sym][:stock]
       # puts @sale_amount
     end
@@ -175,8 +171,9 @@ class Boot
         puts "購入したい商品を入力してください"
         vm.get_purchaseable
         name = gets.chomp
-        vm.buy(name)
-        vm.display_hit(vm.hit)
+        if vm.buy(name)
+          vm.display_hit(vm.hit)
+        end
         if vm.hit_flag
           redo
         end
