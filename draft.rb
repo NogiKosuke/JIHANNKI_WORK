@@ -18,24 +18,24 @@
 
 # stock_juice("redbull", "200", "5")
 
-def get_purchaseable
-  h = {coke: {price: 120, stock: 5}, water: {price: 100, stock: 3}}
-  money = 110
-  puts "購入できる商品は以下の通り"
+# def get_purchaseable
+#   h = {coke: {price: 120, stock: 5}, water: {price: 100, stock: 3}}
+#   money = 110
+#   puts "購入できる商品は以下の通り"
 
-  h.each do |name, hash|
-    # if h[:coke][:stock] >= 1 && h[:coke][:price] <= money  
-    # if h[:water][:stock] >= 1 && h[:water][:price] <= money  
-    # puts "#{name}"
-    # puts "#{hash}"
-    # hash = {:price=>120, :stock=>5}
-    if hash[:price]<=money && hash[:stock]>=1
-      puts "#{name}"
-    end
-  end
-end
+#   h.each do |name, hash|
+#     # if h[:coke][:stock] >= 1 && h[:coke][:price] <= money  
+#     # if h[:water][:stock] >= 1 && h[:water][:price] <= money  
+#     # puts "#{name}"
+#     # puts "#{hash}"
+#     # hash = {:price=>120, :stock=>5}
+#     if hash[:price]<=money && hash[:stock]>=1
+#       puts "#{name}"
+#     end
+#   end
+# end
 
-get_purchaseable
+# get_purchaseable
 # def get_all_beverages 
 #   @beverage.each do |name, hash|
 #     puts "ジュース名： #{name}, 値段: #{hash[:price]}, 在庫数:  #{hash[:stock]}"
@@ -57,3 +57,32 @@ get_purchaseable
 
 # drink ={coke: {price: 120, stock: 5}, water: {price: 100, stock: 5}}
 # puts drink[:water][:price]
+
+
+def hit
+  @rand_num = rand(1..100)
+end
+
+def display_hit(rand_num)
+  if rand_num == 1
+    print "7"
+    sleep 2
+    print "7"
+    sleep 3
+    print "7"
+    sleep 1
+    puts "当たり！"      
+  else
+    print "7"
+    sleep 2
+    print "7"
+    sleep 3
+    print "#{rand(1..6)}"
+    sleep 1
+    puts "はずれ！"
+  end
+end
+
+
+hit
+display_hit(1)

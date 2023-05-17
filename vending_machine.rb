@@ -6,7 +6,7 @@ class VendingMachine
   #beautiful moe
   MONEY = [10, 50, 100, 500, 1000].freeze
 
-  attr_accessor :slot_money
+  attr_accessor :slot_money, :hit_flag
 
   # （自動販売機に投入された金額をインスタンス変数の @slot_money に代入する）
   def initialize
@@ -18,6 +18,8 @@ class VendingMachine
                   redbull: {price: 200, stock: 5}}
     # 最初の売上金額は０円
     @sale_amount = 0
+    @hit_flag = false
+    @hit_amount = 0
   end
 
   # 投入金額の総計を取得できる。
@@ -59,20 +61,42 @@ class VendingMachine
   # 投入金額、在庫の点で購入可能なドリンクのリストを取得できる。
   def get_purchaseable
     puts "購入できる商品は以下の通り"
-    @beverage.each do |name, hash|
-      if hash[:price]<=@slot_money && hash[:stock]>=1
-        puts "#{name}"
+    unless @hit_flag
+      @beverage.each do |name, hash|
+        if hash[:price]<=@slot_money && hash[:stock]>=1
+          puts "#{name}"
+        end
+      end
+    else
+      @beverage.each do |name, hash|
+        if hash[:stock]>=1
+          puts "#{name}"
+        end
       end
     end
   end
   
   def check_buy(name)
-    if @beverage[name.to_sym][:stock] >= 1 && @beverage[name.to_sym][:price] <= slot_money
-      puts "買えるよ！"
-      true
+    unless @beverage.has_key?(name.to_sym)
+      puts "その商品はありません"
+      return false
+    end
+    unless @hit_flag
+      if @beverage[name.to_sym][:stock] >= 1 && @beverage[name.to_sym][:price] <= slot_money
+        puts "買えるよ！"
+        true
+      else
+        puts "買えないよ！"
+        false
+      end
     else
-      puts "買えないよ！"
-      false
+      if @beverage[name.to_sym][:stock] >= 1
+        puts "買えるよ！"
+        true
+      else
+        puts "買えないよ！"
+        false
+      end
     end
   end
   
@@ -80,6 +104,10 @@ class VendingMachine
     if check_buy(name)
       @beverage[name.to_sym][:stock] -= 1
       @sale_amount += @beverage[name.to_sym][:price]
+      if @hit_flag
+        @hit_amount += @beverage[name.to_sym][:price]
+      end
+      true
       # puts @beverage[name.to_sym][:stock]
       # puts @sale_amount
     end
@@ -88,17 +116,49 @@ class VendingMachine
   def get_sale_amount
     @sale_amount
   end
+
+  def hit
+    @hit_flag = false
+    @rand_num = rand(1..100)
+  end
+
+  def display_hit(rand_num)
+    if rand_num == 1
+      print "7"
+      sleep 1.5
+      print "7"
+      sleep 2
+      puts "7"
+      sleep 0.5
+      puts "当たり！"
+      @hit_flag = true
+    else
+      print "7"
+      sleep 1.5
+      print "7"
+      sleep 2
+      puts "#{rand(1..6)}"
+      sleep 0.5
+      puts "はずれ！"
+    end
+  end
 end
 
 class Boot
   def self.vending_machine
     vm = VendingMachine.new
     while true
-      puts "いらっしゃいませ　数字を入力してください"
-      puts "1:お金を入れる"
-      puts "2:購入する"
-      puts "3:終了する"
-      number = gets.to_i
+      if vm.hit_flag
+        number = 2
+        puts "もう1本無料で購入できます！"
+      else
+        puts "いらっしゃいませ　メニュー番号(1から3)を入力してください"
+        puts "1:お金を入れる"
+        puts "2:購入する"
+        puts "3:終了する"
+        number = gets.to_i
+      end
+
       if number == 1
         puts "1:お金を入れる"
         puts "お金を入れてください　（一枚ずつ入れてください）"
@@ -111,7 +171,12 @@ class Boot
         puts "購入したい商品を入力してください"
         vm.get_purchaseable
         name = gets.chomp
-        vm.buy(name)
+        if vm.buy(name)
+          vm.display_hit(vm.hit)
+        end
+        if vm.hit_flag
+          redo
+        end
       elsif number == 3
         vm.return_money
         puts "ありがとうございました　またのご利用をお待ちしております"
@@ -142,4 +207,4 @@ class Boot
   end
 end
 
-# Boot.vending_machine
+Boot.vending_machine
