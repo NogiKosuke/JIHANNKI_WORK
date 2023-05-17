@@ -30,19 +30,15 @@ class VendingMachine
     @hit_amount = 0
   end
 
-
-
   def read_stock 
     unless File.exist?(STOCK_FILE)
       return false
     else
       file = File.open(STOCK_FILE, "r")
       str = file.read
-      puts str
       str = str.gsub(/:(\w+)=>/)do
           "\"#{$1}\": "
       end
-      puts str
       @beverage = JSON.parse(str, symbolize_names: true)
     end
   end
@@ -171,26 +167,6 @@ class VendingMachine
     f.puts @beverage
     f.close
   end
-
-  # def save_sale_amount
-  #   if File.exist?(SALE_AMOUNT_FILE )
-  #     f = File.open(SALE_AMOUNT_FILE ,"r")
-  #     @sale_amount += f.read.chomp.to_i
-  #   end
-  #   f = File.open(SALE_AMOUNT_FILE ,"w")
-  #   f.puts @sale_amount
-  #   f.close
-  # end
-
-  # def save_hit_amount
-  #   if File.exist?(HIT_AMOUNT_FILE)
-  #     f = File.open(HIT_AMOUNT_FILE,"r")
-  #     @hit_amount += f.read.chomp.to_i
-  #   end
-  #   f = File.open(HIT_AMOUNT_FILE,"w")
-  #   f.puts @hit_amount
-  #   f.close
-  # end
 
   def save_amount(fine_name, amount)
     if File.exist?(fine_name)
