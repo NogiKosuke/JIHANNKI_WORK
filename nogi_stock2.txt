@@ -1,1 +1,1 @@
-{:coke=>{:price=>120, :stock=>5}, :water=>{:price=>100, :stock=>5}, :redbull=>{:price=>200, :stock=>5}}
+{:coke=>{:price=>120, :stock=>5}, :water=>{:price=>100, :stock=>5}, :redbull=>{:price=>200, :stock=>5}, :fanta=>{:price=>150, :stock=>10}, :toyama=>{:price=>10, :stock=>1000}}
