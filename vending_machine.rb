@@ -18,9 +18,11 @@ class VendingMachine
     @slot_money = 0
     # 最初の自販機に入っているのは１２０円のコーラ５本
     unless read_stock
-      @beverage = {coke: {price: 120, stock: 5},
-                    water: {price: 100, stock: 5},
-                    redbull: {price: 200, stock: 5}}
+      @beverage = {
+                    :coke=>{:price=>120, :stock=>5},
+                    :water=>{:price=>100, :stock=>5},
+                    :redbull=>{:price=>200, :stock=>5}
+                  }
     else
       read_stock
     end
